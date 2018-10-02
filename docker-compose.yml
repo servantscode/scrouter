@@ -1,0 +1,27 @@
+version: '3'
+services:
+  scrouter:
+    image: "servantscode/scrouter:latest"
+    ports:
+     - "80:80"
+  parish-manager:
+    image: "servantscode/parish-manager:latest"
+    ports:
+     - "8081:80"
+  person-svc:
+    image: "servantscode/person-svc:latest"
+    ports:
+     - "8080:8080"
+  postgres:
+    image: "postgres"
+    ports:
+     - "5432:5432"
+    volumes:
+     - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: "SuperSecret"
+
+volumes:
+  postgres:
+    external: 
+      name: person-svc_postgres
