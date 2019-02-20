@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scrouter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrouter
+  template:
+    metadata:
+      labels:
+        app: scrouter
+    spec:
+      containers:
+      - name: scrouter
+        image: servantscode/scrouter
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: scrouter
+  name: scrouter-lb
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 31903
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: scrouter
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - hostname: localhost
