@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: scrouter
-        image: servantscode/scrouter
+        image: servantcode/scrouter
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
